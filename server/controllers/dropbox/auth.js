@@ -8,34 +8,34 @@ module.exports = function () {
       this.session.dropbox = {}
     }
 
-    request.post({
-      url : config.dropbox.tokenURI,
-      json: true,
-      qs  : {
-        code         : this.query.code,
-        grant_type   : 'authorization_code',
-        client_id    : config.dropbox.clientKey,
-        client_secret: config.dropbox.clientSecret,
-        redirect_uri : callback
-      },
-      headers: [
-        {
-          name : 'content-type',
-          value: 'application/json'
-        }
-      ]
-    }, (err, res, body) => {
-      if (err) {
-        return console.log(err)
-      }
+    // request.post({
+    //   url : config.dropbox.tokenURI,
+    //   json: true,
+    //   qs  : {
+    //     code         : this.query.code,
+    //     grant_type   : 'authorization_code',
+    //     client_id    : config.dropbox.clientKey,
+    //     client_secret: config.dropbox.clientSecret,
+    //     redirect_uri : callback
+    //   },
+    //   headers: [
+    //     {
+    //       name : 'content-type',
+    //       value: 'application/json'
+    //     }
+    //   ]
+    // }, (err, res, body) => {
+    //   if (err) {
+    //     return console.log(err)
+    //   }
 
-      var client = new Dropbox.Client({
-        key   : config.dropbox.key,
-        secret: config.dropbox.secret
-      })
-      console.dir(client)
+    //   var client = new Dropbox.Client({
+    //     key   : config.dropbox.key,
+    //     secret: config.dropbox.secret
+    //   })
+    //   console.dir(client)
 
-      this.session.dropbox.token = body.access_token
-    })
+    //   this.session.dropbox.token = body.access_token
+    // })
   }
 }
