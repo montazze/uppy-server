@@ -14,6 +14,8 @@ var googleAuth = require('./server/websocket/google/authorize')
 var googleLogout = require('./server/websocket/google/logout')
 var googleList = require('./server/websocket/google/list')
 
+var helpers = require('./server/helpers')
+
 var app = websockify(koa())
 
 var version = require('./package.json').version
@@ -70,7 +72,30 @@ function wrapSend (sendFn) {
   }
 }
 
+function handleAuth (data) {
+  var token = data.token
+
+  if (token === null || typeof token === 'undefined') {
+    console.log('im in here')
+    console.log(data)
+    // token = helpers.generateAndStoreToken(data.upgradeReq)
+    console.log(token)
+    this.websocket.send('uppy.token', {token})
+  }
+  console.log(token)
+  var decoded = helpers.verifyToken(token)
+
+  if (!decoded || !decoded.auth) {
+  }
+
+  this.websocket.sessionId = decoded.auth
+  this.websocket.send('uppy.auth.pass')
+}
+
 app.ws.use(route.all('/', function * (next) {
+  this.websocket.on('uppy.auth', handleAuth.bind(this))
+
+  // this.websocket.on('uppy.createToken', createToken.bind(this))
   this.websocket.send = wrapSend(this.websocket.send).bind(this.websocket)
   app.context.websocket = this.websocket
   this.websocket.send('uppy.debug', 'websocket init')

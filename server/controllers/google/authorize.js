@@ -6,6 +6,7 @@
  * Otherwise, it's true.
  */
 module.exports = function * (next) {
+  return
   var self = this
   var Purest = require('purest')
   var google = new Purest({
