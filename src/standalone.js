@@ -53,6 +53,12 @@ app.get('/', (req, res) => {
 })
 
 app.use(uppy.app({
+  s3: {
+    key: process.env.UPPYSERVER_AWS_KEY,
+    secret: process.env.UPPYSERVER_AWS_SECRET,
+    bucket: process.env.UPPYSERVER_AWS_BUCKET,
+    region: process.env.UPPYSERVER_AWS_REGION
+  },
   providerOptions: {
     google: {
       key: process.env.UPPYSERVER_GOOGLE_KEY,
